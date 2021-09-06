@@ -1,0 +1,82 @@
+<div class="d-flex" id="wrapper">
+    <!-- Sidebar-->
+    <app-sidebar></app-sidebar>
+    <!-- Page content wrapper-->
+    <div id="page-content-wrapper">
+        <!-- Top navigation-->
+        <app-navbar></app-navbar>
+        <!-- Page content-->
+        <div class="container-fluid">
+            <h1 class="h3 mt-4">Mpampiasa</h1>
+            <div class="card shadow my-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight_bold">Lisitrin'ny mpampiasa</h6>
+                </div>
+                <div class="card-body">
+                    <table class="table table-stripped table-responsive">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Anarana sy Fanampiny</th>
+                                <th>Mailaka</th>
+                                <th>Anjara asa</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let user of userList; let i = index">
+                                <td>{{i + 1}}</td>
+                                <td>{{user.name}}</td>
+                                <td>{{user.email}}</td>
+                                <td>{{user.role}}</td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-outline-custom" data-bs-toggle="modal" data-bs-target="#editModal"><fa-icon [icon]="faUserEdit"></fa-icon></a> 
+                                    <a href="#" class="btn btn-sm btn-outline-custom" data-bs-toggle="modal" data-bs-target="#deleteModal"><fa-icon [icon]="faUserTimes"></fa-icon></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="editModal" class="modal fade" tabindex="-1" aria-labelledby="editModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Mpampiasa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #editForm="ngForm" (ngSubmit)="onEditSubmit(editForm)">
+                    <input type="hidden" name="id">
+                    <input type="text" name="name" id="name" class="form-control mb-3" placeholder="Anarana sy fanampiny" ngModel required>
+                    <input type="email" class="form-control mb-3" name="email" id="email" placeholder="Mailaka" ngModel required>
+                    <select class="form-control mb-3" name="district" id="district" ngModel required>
+                        <option value="0">Kartie</option>
+                        <option *ngFor="let role of roles" value="role.key">{{role.name}}</option>
+                    </select>
+                    <input type="submit" value="Raiketina" class="btn btn-custom">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="deleteModal" class="modal fade" tabindex="-1" aria-labelledby="deleteModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Hamafa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Manaiky marina ny hamafana an'io mpampiasa io ve ianao?</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Tsia</button>
+                <button class="btn btn-primary" (click)="onDeleteConfirm()">Eny</button>
+            </div>
+        </div>
+    </div>
+</div>

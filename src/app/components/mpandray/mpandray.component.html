@@ -1,0 +1,166 @@
+<div class="d-flex" id="wrapper">
+    <!-- Sidebar-->
+    <app-sidebar></app-sidebar>
+    <!-- Page content wrapper-->
+    <div id="page-content-wrapper">
+        <!-- Top navigation-->
+        <app-navbar></app-navbar>
+        <!-- Page content-->
+        <div class="container-fluid">
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mt-4">Mpandray</h1>
+                <button class="btn btn-sm btn-custom shadow-sm" data-bs-toggle="modal" data-bs-target="#addModal"><fa-icon [icon]="faUserPlus"></fa-icon> Hampiditra</button>
+            </div>
+            <div class="card shadow my-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight_bold">Lisitrin'ny mpandray</h6>
+                </div>
+                <div class="card-body">
+                    <table class="table table-stripped table-responsive">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Adiresy</th>
+                                <th>Anarana sy Fanampiny</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let mpandray of mpandrayList; let i = index">
+                                <td>{{i + 1}}</td>
+                                <td>{{mpandray.address}}</td>
+                                <td>{{mpandray.name}}</td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-outline-custom" data-bs-toggle="modal" data-bs-target="#viewModal"><fa-icon [icon]="faMoney"></fa-icon></a>
+                                    <a href="#" class="btn btn-sm btn-outline-custom" data-bs-toggle="modal" data-bs-target="#viewModal"><fa-icon [icon]="faCalendar"></fa-icon></a>
+                                    <a href="#" class="btn btn-sm btn-outline-custom" data-bs-toggle="modal" data-bs-target="#editModal" (click)="onHandleEdit(mpandray)"><fa-icon [icon]="faEdit"></fa-icon></a> 
+                                    <a href="#" class="btn btn-sm btn-outline-custom" data-bs-toggle="modal" data-bs-target="#deleteModal" (click)="onHandleDelete(mpandray)"><fa-icon [icon]="faTrash"></fa-icon></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="addModal" class="modal fade" tabindex="-1" aria-labelledby="addModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Mpandray</h5>
+                <button type="button" class="btn-close" id="close-add" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #addForm="ngForm" (ngSubmit)="onAddSubmit(addForm)">
+                    <input type="text" name="name" id="name" class="form-control mb-3" placeholder="Anarana sy fanampiny" ngModel required>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="radio" class="mb-3" name="gender" id="male" value="1" ngModel required> 
+                                <label for="male">Lehilahy</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="radio" class="mb-3" name="gender" id="female" value="0" ngModel required> 
+                                <label for="female">Vehivavy</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="text" class="form-control mb-3" name="address" id="address" placeholder="Adiresy" ngModel required>
+                        </div>
+                        <div class="col-6">
+                            <select class="form-control mb-3" name="district" id="district" ngModel required>
+                                <option value="0">Kartie</option>
+                                <option *ngFor="let district of districtsList" value="{{district.id}}">{{district.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="date" name="dateOfBirth" id="dateOfBirth" class="form-control mb-3" placeholder="Date nahaterahana" ngModel required>
+                    <input type="text" name="phone" id="phone" class="form-control mb-3" placeholder="Laharana finday" ngModel required>
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="text" class="form-control mb-3" name="email" id="email" placeholder="Mailaka" ngModel>
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control mb-3" name="facebook" id="facebook" placeholder="Facebook" ngModel>
+                        </div>
+                    </div>
+                    <input type="submit" value="Raiketina" [disabled]="addForm.invalid" class="btn btn-warning">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="editModal" class="modal fade" tabindex="-1" aria-labelledby="editModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Hanova mpandray</h5>
+                <button type="button" class="btn-close" id="close-edit" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #editForm="ngForm" (ngSubmit)="onEditSubmit(editForm)">
+                    <input type="hidden" name="id" ngModel="{{toEdit.id}}">
+                    <input type="text" name="name" id="name" class="form-control mb-3" placeholder="Anarana sy fanampiny" ngModel="{{toEdit.name}}" required>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="radio" name="gender" id="male" value="1"  ngModel="{{toEdit.gender}}" required checked="{{toEdit.gender == 1 ? 'checked' : ''}}">
+                                <label for="male">Lehilahy</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="radio" name="gender" id="female" value="0"  ngModel="{{toEdit.gender}}" required checked="{{toEdit.gender == 0 ? 'checked' : ''}}">
+                                <label for="female">Vehivavy</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="text" class="form-control mb-3" name="address" id="address" placeholder="Adiresy" ngModel="{{toEdit.address}}" required>
+                        </div>
+                        <div class="col-6">
+                            <select class="form-control mb-3" name="district" id="district" ngModel="{{toEdit.district}}" required>
+                                <option value="0">Kartie</option>
+                                <option *ngFor="let district of districtsList" value="{{district.id}}" selected="{{toEdit.district == district.id ? true : false}}">{{district.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="date" name="dateOfBirth" id="dateOfBirth" class="form-control mb-3" placeholder="Daty nahaterahana" ngModel="{{toEdit.dateOfBirth | date:'short'}}" required>
+                    <input type="text" name="phone" id="phone" class="form-control mb-3" placeholder="Laharana finday" ngModel="{{toEdit.phone}}" required>
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="text" class="form-control mb-3" name="email" id="email" placeholder="Mailaka" ngModel="{{toEdit.email}}">
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control mb-3" name="facebook" id="facebook" placeholder="Facebook" ngModel="{{toEdit.facebook}}">
+                        </div>
+                    </div>
+                    <input type="submit" value="Raiketina" [disabled]="editForm.invalid" class="btn btn-warning">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="deleteModal" class="modal fade" tabindex="-1" aria-labelledby="deleteModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Hamafa</h5>
+                <button type="button" class="btn-close" id="close-delete" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Manaiky marina ny hamafana an'ny mpandray "{{toDelete.name}}" ve ianao?</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Tsia</button>
+                <button class="btn btn-primary" (click)="removeMpandray(toDelete)">Eny</button>
+            </div>
+        </div>
+    </div>
+</div>

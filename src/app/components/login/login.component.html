@@ -1,0 +1,59 @@
+<style>
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        display: flex;
+        align-items: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: ghostwhite;
+    }
+
+    .form-signin {
+        width: 100%;
+        max-width: 330px;
+        padding: 15px;
+        margin: auto;
+    }
+
+    .form-signin .form-floating:focus-within {
+        z-index: 2;
+    }
+
+    .form-signin input[type="email"] {
+        /* height: 50px; */
+        padding: 10px;
+        margin-bottom: 5px;
+        border-radius: 50px;
+    }
+
+    .form-signin input[type="password"] {
+        /* height: 50px; */
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 50px;
+    }
+
+    .form-signin button[type="submit"] {
+        padding: 10px;
+        border-radius: 50px;
+    }
+</style>
+
+<div class="text-center">
+    <main class="card form-signin my-5" style="background-color: #fff;">
+        <form #loginForm="ngForm" (ngSubmit)="onLoginSubmit(loginForm)">
+            <h1 class="h3 mb-3 fw-normal">Fanamarinana</h1>
+        
+            <input type="email" class="form-control" name="email" placeholder="Mailaka" ngModel required>
+            
+            <input type="password" class="form-control" name="password" placeholder="Teny miafina" ngModel required>
+            
+            <button class="w-100 btn btn-md btn-custom" type="submit">Hiditra</button>
+            <p class="my-3 text-muted">Hadino ny teny miafina?</p>
+        </form>
+    </main>
+</div>

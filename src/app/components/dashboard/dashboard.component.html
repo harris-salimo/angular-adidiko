@@ -1,0 +1,102 @@
+<div class="d-flex" id="wrapper">
+    <!-- Sidebar-->
+    <app-sidebar></app-sidebar>
+    <!-- Page content wrapper-->
+    <div id="page-content-wrapper">
+        <!-- Top navigation-->
+        <app-navbar></app-navbar>
+        <!-- Page content-->
+        <div class="container-fluid">
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mt-4">Tableau de bord</h1>
+                <button class="btn btn-sm btn-custom shadow-sm" data-bs-toggle="modal" data-bs-target="#lineChartModal"><fa-icon [icon]="faChart"></fa-icon> Rapport annuel</button>
+            </div>
+            <div class="row">
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="text-xs font-weight-bold mb-1">Fitambaran'ny adidy</div>
+                            <div class="h5 mb-0 font-weight-bold">{{sumAdidy | mycurrency}} Ar</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="text-xs font-weight-bold mb-1">Taha-pahavitrihana</div>
+                            <div class="h5 mb-0 font-weight-bold">45 %</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="text-xs font-weight-bold mb-1">Isan'ny mpandray</div>
+                            <div class="h5 mb-0 font-weight-bold">{{numOfMpandray}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="text-xs font-weight-bold mb-1">Isan'ny mpampiasa</div>
+                            <div class="h5 mb-0 font-weight-bold">{{numOfUser}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h3 class="m-0 font-weight_bold">Adidy isakin'ny kartie</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <canvas 
+                                baseChart 
+                                [chartType]="'doughnut'"
+                                [legend]="true" 
+                                [datasets]="doughnutChartData" 
+                                [labels]="doughnutChartLabels" 
+                                [options]="chartOptions"
+                            ></canvas>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input class="form-check-input" type="radio" name="toShow" id="money" >
+                                <label class="form-check-label" for="money">Fitambaran'ny vola</label>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-check-input" type="radio" name="toShow" id="percent">
+                                <label class="form-check-label" for="percent">Taham-pahavitrihana</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="lineChartModal" class="modal fade" tabindex="-1" aria-labelledby="lineChartModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="lineChartModalLabel">Toe-bola rehetra</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <canvas 
+                    baseChart 
+                    [chartType]="'line'"
+                    [legend]="true" 
+                    [datasets]="lineChartData" 
+                    [labels]="lineChartLabels" 
+                    [options]="chartOptions"
+                ></canvas>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Hiverina</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+<div class="d-flex" id="wrapper">
+    <!-- Sidebar-->
+    <app-sidebar></app-sidebar>
+    <!-- Page content wrapper-->
+    <div id="page-content-wrapper">
+        <!-- Top navigation-->
+        <app-navbar></app-navbar>
+        <!-- Page content-->
+        <div class="container-fluid">
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mt-4">Kartie</h1>
+                <button class="btn btn-sm btn-custom shadow-sm" data-bs-toggle="modal" data-bs-target="#addModal"><fa-icon [icon]="faPlus"></fa-icon> Hampiditra</button>
+            </div>
+            <div class="card shadow my-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight_bold">Lisitrin'ny kartie</h6>
+                </div>
+                <div class="card-body">
+                    <table class="table table-stripped table-responsive">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Anarana</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let district of districtList; let i = index">
+                                <td>{{i + 1}}</td>
+                                <td>{{district.name}}</td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-outline-custom" data-bs-toggle="modal" data-bs-target="#editModal" (click)="onHandleEdit(district)"><fa-icon [icon]="faEdit"></fa-icon></a> 
+                                    <a href="#" class="btn btn-sm btn-outline-custom" data-bs-toggle="modal" data-bs-target="#deleteModal" (click)="onHandleDelete(district)"><fa-icon [icon]="faTrash"></fa-icon></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="addModal" class="modal fade" tabindex="-1" aria-labelledby="addModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Kartie</h5>
+                <button type="button" class="btn-close" id="close-add" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #addForm="ngForm" (ngSubmit)="onAddSubmit(addForm)">
+                    <input type="text" class="form-control mb-3" name="name" id="name" placeholder="Anaran'ny kartie" ngModel required>
+                    <input type="submit" class="btn btn-warning" value="Raiketina" [disabled]="addForm.invalid">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="editModal" class="modal fade" tabindex="-1" aria-labelledby="editModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Hanova kartie</h5>
+                <button type="button" class="btn-close" id="close-edit" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #editForm="ngForm" (ngSubmit)="onEditSubmit(editForm)">
+                    <input type="hidden" name="id" ngModel="{{toEdit.id}}">
+                    <input type="text" class="form-control mb-3" name="name" id="name" placeholder="Anaran'ny kartie" ngModel="{{toEdit.name}}" required>
+                    <input type="submit" class="btn btn-warning" value="Raiketina">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="deleteModal" class="modal fade" tabindex="-1" aria-labelledby="deleteModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Hamafa</h5>
+                <button type="button" class="btn-close" id="close-delete" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Manaiky marina ny hamafana an'io kartie {{toDelete.name}} ve ianao?</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Tsia</button>
+                <button class="btn btn-primary" (click)="removeDistrict(toDelete)">Eny</button>
+            </div>
+        </div>
+    </div>
+</div>

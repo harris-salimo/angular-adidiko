@@ -1,0 +1,118 @@
+<div class="d-flex" id="wrapper">
+    <!-- Sidebar-->
+    <app-sidebar></app-sidebar>
+    <!-- Page content wrapper-->
+    <div id="page-content-wrapper">
+        <!-- Top navigation-->
+        <app-navbar></app-navbar>
+        <!-- Page content-->
+        <div class="container-fluid">
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mt-4">Adidy</h1>
+                <button class="btn btn-sm btn-custom shadow-sm" data-bs-toggle="modal" data-bs-target="#addModal"><fa-icon [icon]="faPlus"></fa-icon> Hampiditra</button>
+            </div>
+            <div class="card shadow my-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight_bold">Lisitrin'ny adidy</h6>
+                </div>
+                <div class="card-body">
+                    <table class="table table-stripped table-responsive">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Adiresy</th>
+                                <th>Anarana sy Fanampiny</th>
+                                <th>Vola(Ar)</th>
+                                <th>Manomboka</th>
+                                <th>Mifarana</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let adidy of adidyList; let i = index">
+                                <td>{{i + 1}}</td>
+                                <td>{{adidy.mpandray.address}}</td>
+                                <td>{{adidy.mpandray.name}}</td>
+                                <td>{{adidy.total | mycurrency}}</td>
+                                <td>{{adidy.beginAt | mydate}}</td>
+                                <td>{{adidy.endAt | mydate}}</td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-outline-custom" data-bs-toggle="modal" data-bs-target="#editModal" (click)="onHandleEdit(adidy)"><fa-icon [icon]="faEdit"></fa-icon></a> 
+                                    <a href="#" class="btn btn-sm btn-outline-custom" data-bs-toggle="modal" data-bs-target="#deleteModal" (click)="onHandleDelete(adidy)"><fa-icon [icon]="faTrash"></fa-icon></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="addModal" class="modal fade" tabindex="-1" aria-labelledby="addModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Adidy</h5>
+                <button type="button" class="btn-close" id="close-add" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #addForm="ngForm" (ngSubmit)="onAddSubmit(addForm)">
+                    <input type="text" class="form-control mb-3" name="mpandray" id="mpandray" placeholder="Anaran'ny mpandray" disabled ngModel required>
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="date" class="form-control mb-3" name="beginAt" id="beginAt" placeholder="Volana farany naloha" ngModel required>
+                        </div>
+                        <div class="col-6">
+                            <input type="date" class="form-control mb-3" name="endAt" id="endAt" placeholder="Volana haloha" ngModel required>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control mb-3" name="total" id="total" placeholder="Vola" ngModel required>
+                    <input type="submit" class="btn btn-warning" value="Raiketina" [disabled]="addForm.invalid">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="editModal" class="modal fade" tabindex="-1" aria-labelledby="editModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Hanova adidy</h5>
+                <button type="button" class="btn-close" id="close-edit" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #editForm="ngForm" (ngSubmit)="onEditSubmit(editForm)">
+                    <input type="hidden" name="id" ngModel="{{toEdit.id}}">
+                    <input type="text" class="form-control mb-3" name="mpandray" id="mpandray" placeholder="Anaran'ny mpandray" readonly ngModel="{{toEdit.mpandrayId}}" required>
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="date" class="form-control mb-3" name="beginAt" id="beginAt" placeholder="Volana farany naloha" ngModel="{{toEdit.beginAt}}" required>
+                        </div>
+                        <div class="col-6">
+                            <input type="date" class="form-control mb-3" name="endAt" id="endAt" placeholder="Volana haloha" ngModel="{{toEdit.endAt}}" required>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control mb-3" name="total" id="total" placeholder="Vola" ngModel="{{toEdit.total}}" required>
+                    <input type="submit" class="btn btn-warning" value="Raiketina" [disabled]="editForm.invalid">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="deleteModal" class="modal fade" tabindex="-1" aria-labelledby="deleteModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Hamafa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Manaiky marina ny hamafana an'ny adidin'ny mpandray "{{toDelete.mpandrayId}}" ve ianao?</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Tsia</button>
+                <button class="btn btn-primary" (click)="removeAdidy(toDelete)">Eny</button>
+            </div>
+        </div>
+    </div>
+</div>
