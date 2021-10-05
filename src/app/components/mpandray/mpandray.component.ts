@@ -1,9 +1,11 @@
 import { formatNumber } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { faCalendar, faEdit, faMoneyCheck, faTrash, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { District } from 'src/app/district';
 import { Mpandray } from 'src/app/mpandray';
+import { AdidyService } from 'src/app/services/adidy.service';
 import { DistrictService } from 'src/app/services/district.service';
 import { MpandrayService } from 'src/app/services/mpandray.service';
 
@@ -20,10 +22,11 @@ export class MpandrayComponent implements OnInit {
   faTrash = faTrash;
   mpandrayList: Mpandray[] = [];
   districtsList: District[] = [];
+  forMpandray: any = "Anaran'ny mpandray";
   toEdit: any = {};
   toDelete: any = {};
 
-  constructor(private service: MpandrayService, private districtService: DistrictService) { }
+  constructor(private mpandrayService: MpandrayService, private adidyService: AdidyService, private districtService: DistrictService, private router: Router) { }
 
   ngOnInit(): void {
     this.fetchMpandray();
@@ -31,7 +34,7 @@ export class MpandrayComponent implements OnInit {
   }
 
   fetchMpandray() {
-    this.service.getAllMpandray().subscribe(response => {
+    this.mpandrayService.getAllMpandray().subscribe(response => {
       if (response.success) {
         this.mpandrayList = response.mpandray;
       }
@@ -46,8 +49,8 @@ export class MpandrayComponent implements OnInit {
     });
   }
 
-  onAddSubmit(form: NgForm) {
-    document.getElementById("close-add")?.click();
+  onAddMpandraySubmit(form: NgForm) {
+    document.getElementById("close-add-mpandray")?.click();
 
     const name = form.value.name;
     const gender = form.value.gender;
@@ -69,10 +72,36 @@ export class MpandrayComponent implements OnInit {
       facebook: facebook
     };
 
-    this.service.createMpandray(reqObject).subscribe(response => {
+    this.mpandrayService.createMpandray(reqObject).subscribe(response => {
       if (response.success) {
         this.fetchMpandray();
         form.reset();
+      }
+    });
+  }
+
+  onHandleAddAdidy(mpandray: any) {
+    this.forMpandray = mpandray;
+  }
+
+  onAddAdidySubmit(form: NgForm) {
+    document.getElementById('close-add-adidy')?.click();
+
+    const mpandray = form.value.mpandrayId;
+    const beginAt = form.value.beginAt;
+    const endAt = form.value.endAt;
+    const total = form.value.total;
+
+    const reqObj = {
+      mpandray: mpandray,
+      beginAt: beginAt,
+      endAt: endAt,
+      total: total
+    };
+
+    this.adidyService.createAdidy(reqObj).subscribe(response => {
+      if (response.success) {
+        this.router.navigate(['adidy']);
       }
     });
   }
@@ -106,7 +135,7 @@ export class MpandrayComponent implements OnInit {
       facebook: facebook
     };
 
-    this.service.updateMpandray(reqObject).subscribe(response => {
+    this.mpandrayService.updateMpandray(reqObject).subscribe(response => {
       if (response.success) {
         this.fetchMpandray();
       }
@@ -120,7 +149,7 @@ export class MpandrayComponent implements OnInit {
   removeMpandray(mpandray: Mpandray) {
     document.getElementById('close-delete')?.click();
 
-    this.service.deleteMpandray(mpandray).subscribe(response => {
+    this.mpandrayService.deleteMpandray(mpandray).subscribe(response => {
       if (response.success) {
         this.fetchMpandray();
       }

@@ -57,7 +57,9 @@
             </div>
             <div class="modal-body">
                 <form #addForm="ngForm" (ngSubmit)="onAddSubmit(addForm)">
-                    <input type="text" class="form-control mb-3" name="mpandray" id="mpandray" placeholder="Anaran'ny mpandray" disabled ngModel required>
+                    <select class="form-control mb-3" name="mpandray" id="mpandray" ngModel required>
+                        <option *ngFor="let mpandray of mpandrayList" value="{{mpandray.id}}">{{mpandray.name}}</option>
+                    </select>
                     <div class="row">
                         <div class="col-6">
                             <input type="date" class="form-control mb-3" name="beginAt" id="beginAt" placeholder="Volana farany naloha" ngModel required>
@@ -83,7 +85,8 @@
             <div class="modal-body">
                 <form #editForm="ngForm" (ngSubmit)="onEditSubmit(editForm)">
                     <input type="hidden" name="id" ngModel="{{toEdit.id}}">
-                    <input type="text" class="form-control mb-3" name="mpandray" id="mpandray" placeholder="Anaran'ny mpandray" readonly ngModel="{{toEdit.mpandrayId}}" required>
+                    <input type="text" class="form-control mb-3" name="mpandray" id="mpandray" placeholder="Anaran'ny mpandray" disabled ngModel="{{toEdit.mpandrayId}}" required>
+                    <input type="hidden" class="form-control mb-3" name="mpandrayId" id="mpandrayId" ngModel="{{toEdit.mpandrayId}}">
                     <div class="row">
                         <div class="col-6">
                             <input type="date" class="form-control mb-3" name="beginAt" id="beginAt" placeholder="Volana farany naloha" ngModel="{{toEdit.beginAt}}" required>

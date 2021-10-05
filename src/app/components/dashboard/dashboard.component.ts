@@ -10,7 +10,7 @@ import { DashboardService } from 'src/app/services/dashboard.service';
 export class DashboardComponent implements OnInit {
   faChart = faChartLine;
 
-  doughnutChartData = [
+  /* doughnutChartData = [
     {
       data: [330, 600, 260, 700],
       labels: ['Account A', 'Account B', 'Account C', 'Account D']
@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit {
     'Okt',
     'Nov',
     'Des'
-  ];
+  ]; */
   chartOptions = {
     responsive: true
   };
@@ -46,12 +46,31 @@ export class DashboardComponent implements OnInit {
   percentAdidy: Number = 0.0;
   numOfMpandray: Number = 0;
   numOfUser: Number = 0;
+  doughnutChartData: { data: any; labels: any; }[] = [];
+  doughnutChartLabels: any;
+  lineChartData: { data: any; label: string; }[] = [];
+  lineChartLabels: any;
 
   constructor(private service: DashboardService) { }
 
   ngOnInit(): void {
     this.service.getDashboardData().subscribe(response => {
       if(response.success) {
+        this.doughnutChartData = [
+          {
+            data: response.adidyByDistrict.totals2,
+            labels: response.adidyByDistrict.districts
+          }
+        ];
+        this.doughnutChartLabels = response.adidyByDistrict.districts;
+      
+        this.lineChartData = [
+          {
+            data: response.adidyByYear.totals1,
+            label: 'Adidy tamin\'ny taona ity'
+          }
+        ];
+        this.lineChartLabels = response.adidyByYear.months;
         this.sumAdidy = response.sumAdidy;
         this.numOfMpandray = response.numOfMpandray;
         this.numOfUser = response.numOfUser;

@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { faEdit, faPlus, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { Adidy } from 'src/app/adidy';
+import { Mpandray } from 'src/app/mpandray';
 import { AdidyService } from 'src/app/services/adidy.service';
+import { MpandrayService } from 'src/app/services/mpandray.service';
 
 @Component({
   selector: 'app-adidy',
@@ -14,19 +16,29 @@ export class AdidyComponent implements OnInit {
   faEdit = faEdit;
   faTrash = faTrashAlt;
   adidyList: Adidy[] = [];
+  mpandrayList: Mpandray[] = [];
   toEdit: any = {};
   toDelete: any = {};
 
-  constructor(private service: AdidyService) { }
+  constructor(private adidyService: AdidyService, private mpandrayService: MpandrayService) { }
 
   ngOnInit(): void {
     this.fetchAdidy();
+    this.fetchMpandray();
   }
 
   fetchAdidy() {
-    this.service.getAllAdidy().subscribe(response => {
+    this.adidyService.getAllAdidy().subscribe(response => {
       if (response.success) {
         this.adidyList = response.adidy;
+      }
+    });
+  }
+
+  fetchMpandray() {
+    this.mpandrayService.getAllMpandray().subscribe(response => {
+      if (response.success) {
+        this.mpandrayList = response.mpandray;
       }
     });
   }
@@ -34,6 +46,8 @@ export class AdidyComponent implements OnInit {
   onAddSubmit(form: NgForm) {
     document.getElementById('close-add')?.click();
 
+    console.log(form.value);
+    
     const mpandray = form.value.mpandray;
     const beginAt = form.value.beginAt;
     const endAt = form.value.endAt;
@@ -46,7 +60,7 @@ export class AdidyComponent implements OnInit {
       total: total
     };
 
-    this.service.createAdidy(reqObj).subscribe(response => {
+    this.adidyService.createAdidy(reqObj).subscribe(response => {
       if (response.success) {
         this.adidyList = response.adidy;
       }
@@ -74,7 +88,7 @@ export class AdidyComponent implements OnInit {
       total: total
     };
 
-    this.service.updateAdidy(reqObj).subscribe(response => {
+    this.adidyService.updateAdidy(reqObj).subscribe(response => {
       if (response.success) {
         this.adidyList = response.adidy;
       }
@@ -88,7 +102,7 @@ export class AdidyComponent implements OnInit {
   removeAdidy(adidy: Adidy) {
     document.getElementById('close-delete')?.click();
 
-    this.service.deleteAdidy(adidy).subscribe(response => {
+    this.adidyService.deleteAdidy(adidy).subscribe(response => {
       if (response.success) {
         this.adidyList = response.adidy;
       }

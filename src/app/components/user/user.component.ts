@@ -23,6 +23,8 @@ export class UserComponent implements OnInit {
       name: 'Mpandrindra fototra'
     }
   ];
+  toEdit: any = {};
+  toDelete: any = {};
 
   constructor(private service: UserService) { }
 
@@ -32,6 +34,10 @@ export class UserComponent implements OnInit {
         this.userList = response.users;
       }
     });
+  }
+
+  onHandleEdit(district: any) {
+    this.toEdit = district;
   }
 
   onEditSubmit(form: NgForm) {
@@ -47,6 +53,10 @@ export class UserComponent implements OnInit {
       role: role
     };
     this.service.updateUser(reqObject).subscribe();
+  }
+
+  onHandleDelete(district: any) {
+    this.toDelete = district;
   }
 
   onDeleteConfirm() {

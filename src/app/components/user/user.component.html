@@ -30,8 +30,8 @@
                                 <td>{{user.email}}</td>
                                 <td>{{user.role}}</td>
                                 <td>
-                                    <a href="#" class="btn btn-sm btn-outline-custom" data-bs-toggle="modal" data-bs-target="#editModal"><fa-icon [icon]="faUserEdit"></fa-icon></a> 
-                                    <a href="#" class="btn btn-sm btn-outline-custom" data-bs-toggle="modal" data-bs-target="#deleteModal"><fa-icon [icon]="faUserTimes"></fa-icon></a>
+                                    <a href="#" class="btn btn-sm btn-outline-custom" data-bs-toggle="modal" data-bs-target="#editModal" (click)="onHandleEdit(user)"><fa-icon [icon]="faUserEdit"></fa-icon></a> 
+                                    <a href="#" class="btn btn-sm btn-outline-custom" data-bs-toggle="modal" data-bs-target="#deleteModal" (click)="onHandleDelete(user)"><fa-icon [icon]="faUserTimes"></fa-icon></a>
                                 </td>
                             </tr>
                         </tbody>
@@ -50,9 +50,9 @@
             </div>
             <div class="modal-body">
                 <form #editForm="ngForm" (ngSubmit)="onEditSubmit(editForm)">
-                    <input type="hidden" name="id">
-                    <input type="text" name="name" id="name" class="form-control mb-3" placeholder="Anarana sy fanampiny" ngModel required>
-                    <input type="email" class="form-control mb-3" name="email" id="email" placeholder="Mailaka" ngModel required>
+                    <input type="hidden" name="id" ngModel="{{toEdit.id}}">
+                    <input type="text" name="name" id="name" class="form-control mb-3" placeholder="Anarana sy fanampiny" ngModel="{{toEdit.name}}" required>
+                    <input type="email" class="form-control mb-3" name="email" id="email" placeholder="Mailaka" ngModel="{{toEdit.email}}" required>
                     <select class="form-control mb-3" name="district" id="district" ngModel required>
                         <option value="0">Kartie</option>
                         <option *ngFor="let role of roles" value="role.key">{{role.name}}</option>
@@ -71,7 +71,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Manaiky marina ny hamafana an'io mpampiasa io ve ianao?</p>
+                <p>Manaiky marina ny hamafana an'io mpampiasa {{toDelete.name}} ve ianao?</p>
             </div>
             <div class="modal-footer justify-content-between">
                 <button class="btn btn-secondary" data-bs-dismiss="modal">Tsia</button>
